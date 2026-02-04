@@ -1,11 +1,11 @@
 module github.com/andrii/mdtool
 
-go 1.21
+go 1.25.6
 
 require (
+	codeberg.org/go-pdf/fpdf v0.11.1
 	github.com/JohannesKaufmann/html-to-markdown v1.4.2
 	github.com/go-shiori/go-readability v0.0.0-20231029095239-6b97d5aba789
-	github.com/jung-kurt/gofpdf v1.16.2
 	github.com/ledongthuc/pdf v0.0.0-20220302134840-0c2507a12d80
 	github.com/spf13/cobra v1.8.0
 )

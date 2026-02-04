@@ -6,8 +6,8 @@ import (
 	"io"
 	"strings"
 
+	"codeberg.org/go-pdf/fpdf"
 	"github.com/andrii/mdtool/pkg/models"
-	"github.com/jung-kurt/gofpdf"
 )
 
 // MD2PDFConverter converts Markdown to PDF
@@ -30,7 +30,7 @@ func (c *MD2PDFConverter) Convert(req *models.ConvertRequest) *models.ConvertRes
 	}
 
 	// Create PDF
-	pdf := gofpdf.New("P", "mm", "A4", "")
+	pdf := fpdf.New("P", "mm", "A4", "")
 	pdf.AddPage()
 	pdf.SetFont("Arial", "", 12)
 

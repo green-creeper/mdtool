@@ -124,7 +124,7 @@ Each conversion is treated as a **provider** with its own implementation:
 - **HTML2MDConverter**: Uses `JohannesKaufmann/html-to-markdown`
 - **Web2MDConverter**: Combines HTTP client + `go-readability` + `html-to-markdown`
 - **PDF2MDConverter**: Uses `ledongthuc/pdf` for text extraction
-- **MD2PDFConverter**: Uses `jung-kurt/gofpdf` for PDF generation
+- **MD2PDFConverter**: Uses `go-pdf/fpdf` for PDF generation
 
 ## Dependencies
 
@@ -135,7 +135,7 @@ All dependencies are **pure Go** libraries:
 | [JohannesKaufmann/html-to-markdown](https://github.com/JohannesKaufmann/html-to-markdown) | HTML to MD conversion | MIT |
 | [go-shiori/go-readability](https://github.com/go-shiori/go-readability) | Readability extraction | MIT |
 | [ledongthuc/pdf](https://github.com/ledongthuc/pdf) | PDF text extraction | MIT |
-| [jung-kurt/gofpdf](https://github.com/jung-kurt/gofpdf) | PDF generation | MIT |
+| [go-pdf/fpdf](https://github.com/go-pdf/fpdf) | PDF generation | MIT |
 | [spf13/cobra](https://github.com/spf13/cobra) | CLI framework | Apache 2.0 |
 | [PuerkitoBio/goquery](https://github.com/PuerkitoBio/goquery) | HTML parsing | BSD-3 |
 
@@ -228,6 +228,17 @@ Contributions are welcome! Areas for improvement:
 - Add DOCX/ODT support
 - Add image extraction from PDFs
 - Enhance Markdown parsing for PDF generation
+
+## License Compliance
+
+This project uses [google/go-licenses](https://github.com/google/go-licenses) to ensure compliance with dependency licenses.
+
+To generate a report of all licenses used:
+
+```bash
+go install github.com/google/go-licenses@latest
+go-licenses report ./... > licenses.csv
+```
 
 ## License
 
