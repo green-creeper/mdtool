@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/andrii/mdtool/internal/scraper"
-	"github.com/andrii/mdtool/pkg/models"
+	"github.com/green-creeper/mdtool/internal/scraper"
+	"github.com/green-creeper/mdtool/pkg/models"
 	"github.com/spf13/cobra"
 )
 

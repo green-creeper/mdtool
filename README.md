@@ -16,7 +16,7 @@ A pure Go CLI tool for converting between Markdown and various formats without e
 
 ```bash
 # Clone the repository
-git clone https://github.com/andrii/mdtool.git
+git clone https://github.com/green-creeper/mdtool.git
 cd mdtool
 
 # Download dependencies

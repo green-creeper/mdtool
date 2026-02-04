@@ -1,4 +1,4 @@
-module github.com/andrii/mdtool
+module github.com/green-creeper/mdtool
 
 go 1.25.6
 

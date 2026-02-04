@@ -9,7 +9,7 @@ import (
 	"time"
 
 	md "github.com/JohannesKaufmann/html-to-markdown"
-	"github.com/andrii/mdtool/pkg/models"
+	"github.com/green-creeper/mdtool/pkg/models"
 	readability "github.com/go-shiori/go-readability"
 )
 

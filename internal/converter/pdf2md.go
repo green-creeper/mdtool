@@ -5,7 +5,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/andrii/mdtool/pkg/models"
+	"github.com/green-creeper/mdtool/pkg/models"
 	"github.com/ledongthuc/pdf"
 )
 

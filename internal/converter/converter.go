@@ -1,6 +1,6 @@
 package converter
 
-import "github.com/andrii/mdtool/pkg/models"
+import "github.com/green-creeper/mdtool/pkg/models"
 
 // Converter is the interface that all converters must implement
 type Converter interface {

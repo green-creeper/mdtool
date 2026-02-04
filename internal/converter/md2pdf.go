@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"codeberg.org/go-pdf/fpdf"
-	"github.com/andrii/mdtool/pkg/models"
+	"github.com/green-creeper/mdtool/pkg/models"
 )
 
 // MD2PDFConverter converts Markdown to PDF

@@ -1,7 +1,7 @@
 codeberg.org/go-pdf/fpdf,https://codeberg.org/go-pdf/fpdf/src/tag/v0.11.1/LICENSE,MIT
 github.com/JohannesKaufmann/html-to-markdown,https://github.com/JohannesKaufmann/html-to-markdown/blob/v1.4.2/LICENSE,MIT
 github.com/PuerkitoBio/goquery,https://github.com/PuerkitoBio/goquery/blob/v1.8.1/LICENSE,BSD-3-Clause
-github.com/andrii/mdtool,https://github.com/andrii/mdtool/blob/HEAD/LICENSE,MIT
+github.com/green-creeper/mdtool,https://github.com/green-creeper/mdtool/blob/HEAD/LICENSE,MIT
 github.com/andybalholm/cascadia,https://github.com/andybalholm/cascadia/blob/v1.3.2/LICENSE,BSD-2-Clause
 github.com/go-shiori/dom,https://github.com/go-shiori/dom/blob/73569d674e1c/LICENSE,MIT
 github.com/go-shiori/go-readability,https://github.com/go-shiori/go-readability/blob/6b97d5aba789/LICENSE,MIT

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/andrii/mdtool/pkg/models"
+	"github.com/green-creeper/mdtool/pkg/models"
 )
 
 func TestHTML2MDConverter_Convert(t *testing.T) {

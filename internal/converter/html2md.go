@@ -5,7 +5,7 @@ import (
 	"io"
 
 	md "github.com/JohannesKaufmann/html-to-markdown"
-	"github.com/andrii/mdtool/pkg/models"
+	"github.com/green-creeper/mdtool/pkg/models"
 )
 
 // HTML2MDConverter converts HTML to Markdown

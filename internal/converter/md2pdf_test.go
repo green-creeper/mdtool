@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/andrii/mdtool/pkg/models"
+	"github.com/green-creeper/mdtool/pkg/models"
 )
 
 func TestMD2PDFConverter_Convert(t *testing.T) {

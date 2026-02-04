@@ -1,6 +1,6 @@
 package main
 
-import cmd "github.com/andrii/mdtool/cmd/mdtool"
+import cmd "github.com/green-creeper/mdtool/cmd/mdtool"
 
 func main() {
 	cmd.Execute()
