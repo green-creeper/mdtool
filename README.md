@@ -124,7 +124,7 @@ Each conversion is treated as a **provider** with its own implementation:
 - **HTML2MDConverter**: Uses `JohannesKaufmann/html-to-markdown`
 - **Web2MDConverter**: Combines HTTP client + `go-readability` + `html-to-markdown`
 - **PDF2MDConverter**: Uses `ledongthuc/pdf` for text extraction
-- **MD2PDFConverter**: Uses `go-pdf/fpdf` for PDF generation
+- **MD2PDFConverter**: Uses `go-pdf/fpdf` with embedded DejaVu fonts for full Unicode support
 
 ## Dependencies
 
@@ -135,9 +135,11 @@ All dependencies are **pure Go** libraries:
 | [JohannesKaufmann/html-to-markdown](https://github.com/JohannesKaufmann/html-to-markdown) | HTML to MD conversion | MIT |
 | [go-shiori/go-readability](https://github.com/go-shiori/go-readability) | Readability extraction | MIT |
 | [ledongthuc/pdf](https://github.com/ledongthuc/pdf) | PDF text extraction | MIT |
+| [yuin/goldmark](https://github.com/yuin/goldmark) | Markdown parsing (AST) | MIT |
 | [go-pdf/fpdf](https://github.com/go-pdf/fpdf) | PDF generation | MIT |
 | [spf13/cobra](https://github.com/spf13/cobra) | CLI framework | Apache 2.0 |
 | [PuerkitoBio/goquery](https://github.com/PuerkitoBio/goquery) | HTML parsing | BSD-3 |
+| [DejaVu Fonts](https://dejavu-fonts.github.io/) | Embedded Unicode fonts | Bitstream Vera |
 
 ## Examples
 
@@ -212,9 +214,11 @@ func (c *DocxToMDConverter) SupportedFormats() (string, string) {
 - **No images**: Text extraction only
 
 ### Markdown to PDF
-- **Basic styling**: Limited to headers, paragraphs, and horizontal rules
-- **No advanced markdown**: Tables, code blocks, and images are not yet supported
-- **Font limitations**: Uses Arial only
+- **Tables**: Renders GFM-style tables with borders
+- **Code blocks**: Renders fenced code blocks with monospace font (great for file trees)
+- **Lists**: Supports ordered and unordered lists with nesting
+- **Font limitations**: Uses Arial for text, Courier for code
+- **No images**: Image embedding is not yet supported
 
 ### Web to Markdown
 - **JavaScript-rendered content**: Cannot fetch content that requires JavaScript execution
@@ -223,11 +227,11 @@ func (c *DocxToMDConverter) SupportedFormats() (string, string) {
 ## Contributing
 
 Contributions are welcome! Areas for improvement:
-- Add support for tables in MD → PDF
+- Add image support in MD → PDF
 - Improve PDF text extraction (handle more complex layouts)
 - Add DOCX/ODT support
 - Add image extraction from PDFs
-- Enhance Markdown parsing for PDF generation
+- Support for custom fonts and styling
 
 ## License Compliance
 

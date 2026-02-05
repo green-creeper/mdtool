@@ -8,6 +8,7 @@ require (
 	github.com/go-shiori/go-readability v0.0.0-20231029095239-6b97d5aba789
 	github.com/ledongthuc/pdf v0.0.0-20220302134840-0c2507a12d80
 	github.com/spf13/cobra v1.8.0
+	github.com/yuin/goldmark v1.7.16
 )
 
 require (
