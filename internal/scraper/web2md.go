@@ -9,6 +9,7 @@ import (
 	"time"
 
 	md "github.com/JohannesKaufmann/html-to-markdown"
+	"github.com/JohannesKaufmann/html-to-markdown/plugin"
 	"github.com/green-creeper/mdtool/pkg/models"
 	readability "github.com/go-shiori/go-readability"
 )
@@ -26,11 +27,13 @@ type Web2MDConverter struct {
 
 // NewWeb2MDConverter creates a new Web to Markdown converter
 func NewWeb2MDConverter() *Web2MDConverter {
+	converter := md.NewConverter("", true, nil)
+	converter.Use(plugin.Table())
 	return &Web2MDConverter{
 		httpClient: &http.Client{
 			Timeout: 30 * time.Second,
 		},
-		mdConverter: md.NewConverter("", true, nil),
+		mdConverter: converter,
 	}
 }
 

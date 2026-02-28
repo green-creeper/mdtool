@@ -5,6 +5,7 @@ import (
 	"io"
 
 	md "github.com/JohannesKaufmann/html-to-markdown"
+	"github.com/JohannesKaufmann/html-to-markdown/plugin"
 	"github.com/green-creeper/mdtool/pkg/models"
 )
 
@@ -16,6 +17,7 @@ type HTML2MDConverter struct {
 // NewHTML2MDConverter creates a new HTML to Markdown converter
 func NewHTML2MDConverter() *HTML2MDConverter {
 	converter := md.NewConverter("", true, nil)
+	converter.Use(plugin.Table())
 	return &HTML2MDConverter{
 		converter: converter,
 	}
