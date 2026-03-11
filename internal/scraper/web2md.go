@@ -48,6 +48,23 @@ func (c *Web2MDConverter) Convert(req *models.ConvertRequest) *models.ConvertRes
 		}
 	}
 
+	// Parse and validate URL
+	parsedURL, err := url.Parse(urlStr)
+	if err != nil {
+		return &models.ConvertResponse{
+			Success: false,
+			Error:   fmt.Errorf("failed to parse URL: %w", err),
+		}
+	}
+
+	// Only allow http and https schemes to prevent SSRF
+	if parsedURL.Scheme != "http" && parsedURL.Scheme != "https" {
+		return &models.ConvertResponse{
+			Success: false,
+			Error:   fmt.Errorf("invalid URL scheme: %s (only http and https are allowed)", parsedURL.Scheme),
+		}
+	}
+
 	// Fetch the web page
 	resp, err := c.httpClient.Get(urlStr)
 	if err != nil {
@@ -86,14 +103,6 @@ func (c *Web2MDConverter) Convert(req *models.ConvertRequest) *models.ConvertRes
 	}
 
 	// Parse with readability to extract main content
-	parsedURL, err := url.Parse(urlStr)
-	if err != nil {
-		return &models.ConvertResponse{
-			Success: false,
-			Error:   fmt.Errorf("failed to parse URL: %w", err),
-		}
-	}
-
 	article, err := readability.FromReader(bytes.NewReader(bodyBytes), parsedURL)
 	if err != nil {
 		return &models.ConvertResponse{
