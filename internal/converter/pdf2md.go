@@ -1,6 +1,7 @@
 package converter
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"strings"
@@ -101,7 +102,7 @@ type bytesReaderAt struct {
 
 func (b *bytesReaderAt) ReadAt(p []byte, off int64) (n int, err error) {
 	if off < 0 {
-		return 0, fmt.Errorf("negative offset")
+		return 0, errors.New("negative offset")
 	}
 	if off >= int64(len(b.data)) {
 		return 0, io.EOF
