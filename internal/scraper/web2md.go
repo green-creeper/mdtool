@@ -2,6 +2,7 @@ package scraper
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -44,7 +45,7 @@ func (c *Web2MDConverter) Convert(req *models.ConvertRequest) *models.ConvertRes
 	if !ok || urlStr == "" {
 		return &models.ConvertResponse{
 			Success: false,
-			Error:   fmt.Errorf("URL is required in options"),
+			Error:   errors.New("URL is required in options"),
 		}
 	}
 
