@@ -41,12 +41,20 @@ var emojiReplacements = map[string]string{
 	"👎": "[-]",
 }
 
+var emojiReplacer *strings.Replacer
+
+func init() {
+	var pairs []string
+	for k, v := range emojiReplacements {
+		pairs = append(pairs, k, v)
+	}
+	emojiReplacer = strings.NewReplacer(pairs...)
+}
+
 // stripEmojis removes or replaces emoji characters that aren't supported by DejaVu fonts
 func stripEmojis(s string) string {
-	// First, apply known replacements
-	for emoji, replacement := range emojiReplacements {
-		s = strings.ReplaceAll(s, emoji, replacement)
-	}
+	// First, apply known replacements in a single pass
+	s = emojiReplacer.Replace(s)
 	// Then strip any remaining emojis
 	return emojiRegex.ReplaceAllString(s, "")
 }
@@ -417,12 +425,13 @@ func (r *pdfRenderer) extractTextRecursive(node ast.Node, buf *bytes.Buffer) {
 	}
 }
 
+var formattingReplacer = strings.NewReplacer("**", "", "__", "")
+
 // extractFormattedText extracts text and strips markdown formatting markers
 func (r *pdfRenderer) extractFormattedText(node ast.Node) string {
 	text := r.extractText(node)
-	// Simple cleanup of any remaining formatting markers
-	text = strings.ReplaceAll(text, "**", "")
-	text = strings.ReplaceAll(text, "__", "")
+	// Simple cleanup of any remaining formatting markers in a single pass
+	text = formattingReplacer.Replace(text)
 	return strings.TrimSpace(text)
 }
 
