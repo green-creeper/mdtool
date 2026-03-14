@@ -33,6 +33,15 @@ func NewWeb2MDConverter() *Web2MDConverter {
 	return &Web2MDConverter{
 		httpClient: &http.Client{
 			Timeout: 30 * time.Second,
+			CheckRedirect: func(req *http.Request, via []*http.Request) error {
+				if len(via) >= 10 {
+					return errors.New("stopped after 10 redirects")
+				}
+				if req.URL.Scheme != "http" && req.URL.Scheme != "https" {
+					return fmt.Errorf("invalid redirect URL scheme: %s (only http and https are allowed)", req.URL.Scheme)
+				}
+				return nil
+			},
 		},
 		mdConverter: converter,
 	}
