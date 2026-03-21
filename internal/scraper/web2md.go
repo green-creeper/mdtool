@@ -86,9 +86,6 @@ func (c *Web2MDConverter) Convert(req *models.ConvertRequest) *models.ConvertRes
 		}
 	}
 
-	// Clear large byte slice to help GC
-	bodyBytes = nil
-
 	// Add article metadata as header
 	var builder strings.Builder
 	// Calculate total size:
