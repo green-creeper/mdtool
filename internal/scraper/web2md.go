@@ -11,8 +11,8 @@ import (
 
 	md "github.com/JohannesKaufmann/html-to-markdown"
 	"github.com/JohannesKaufmann/html-to-markdown/plugin"
-	"github.com/green-creeper/mdtool/pkg/models"
 	readability "github.com/go-shiori/go-readability"
+	"github.com/green-creeper/mdtool/pkg/models"
 )
 
 const (
@@ -129,9 +129,6 @@ func (c *Web2MDConverter) Convert(req *models.ConvertRequest) *models.ConvertRes
 			Error:   fmt.Errorf("failed to convert to Markdown: %w", err),
 		}
 	}
-
-	// Clear large byte slice to help GC
-	bodyBytes = nil
 
 	// Add article metadata as header
 	header := fmt.Sprintf("# %s\n\n", article.Title)
