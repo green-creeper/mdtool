@@ -58,57 +58,12 @@ func (c *Web2MDConverter) Convert(req *models.ConvertRequest) *models.ConvertRes
 		}
 	}
 
-	// Parse and validate URL
-	parsedURL, err := url.Parse(urlStr)
+	// Fetch and validate URL content
+	bodyBytes, parsedURL, err := c.fetchURL(urlStr)
 	if err != nil {
 		return &models.ConvertResponse{
 			Success: false,
-			Error:   fmt.Errorf("failed to parse URL: %w", err),
-		}
-	}
-
-	// Only allow http and https schemes to prevent SSRF
-	if parsedURL.Scheme != "http" && parsedURL.Scheme != "https" {
-		return &models.ConvertResponse{
-			Success: false,
-			Error:   fmt.Errorf("invalid URL scheme: %s (only http and https are allowed)", parsedURL.Scheme),
-		}
-	}
-
-	// Fetch the web page
-	resp, err := c.httpClient.Get(urlStr)
-	if err != nil {
-		return &models.ConvertResponse{
-			Success: false,
-			Error:   fmt.Errorf("failed to fetch URL: %w", err),
-		}
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return &models.ConvertResponse{
-			Success: false,
-			Error:   fmt.Errorf("HTTP request failed with status: %d", resp.StatusCode),
-		}
-	}
-
-	// Limit response size to prevent memory exhaustion
-	limitedReader := io.LimitReader(resp.Body, MaxResponseSize)
-
-	// Read the response body with size limit
-	bodyBytes, err := io.ReadAll(limitedReader)
-	if err != nil {
-		return &models.ConvertResponse{
-			Success: false,
-			Error:   fmt.Errorf("failed to read response body: %w", err),
-		}
-	}
-
-	// Check if we hit the size limit
-	if len(bodyBytes) == MaxResponseSize {
-		return &models.ConvertResponse{
-			Success: false,
-			Error:   fmt.Errorf("response body exceeds maximum size of %d bytes", MaxResponseSize),
+			Error:   err,
 		}
 	}
 
@@ -160,6 +115,47 @@ func (c *Web2MDConverter) Convert(req *models.ConvertRequest) *models.ConvertRes
 			"url":       urlStr,
 		},
 	}
+}
+
+// fetchURL handles parsing, validation, and fetching of the URL content
+func (c *Web2MDConverter) fetchURL(urlStr string) ([]byte, *url.URL, error) {
+	// Parse and validate URL
+	parsedURL, err := url.Parse(urlStr)
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to parse URL: %w", err)
+	}
+
+	// Only allow http and https schemes to prevent SSRF
+	if parsedURL.Scheme != "http" && parsedURL.Scheme != "https" {
+		return nil, nil, fmt.Errorf("invalid URL scheme: %s (only http and https are allowed)", parsedURL.Scheme)
+	}
+
+	// Fetch the web page
+	resp, err := c.httpClient.Get(urlStr)
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to fetch URL: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, nil, fmt.Errorf("HTTP request failed with status: %d", resp.StatusCode)
+	}
+
+	// Limit response size to prevent memory exhaustion
+	limitedReader := io.LimitReader(resp.Body, MaxResponseSize)
+
+	// Read the response body with size limit
+	bodyBytes, err := io.ReadAll(limitedReader)
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check if we hit the size limit
+	if len(bodyBytes) == MaxResponseSize {
+		return nil, nil, fmt.Errorf("response body exceeds maximum size of %d bytes", MaxResponseSize)
+	}
+
+	return bodyBytes, parsedURL, nil
 }
 
 // Name returns the converter name
