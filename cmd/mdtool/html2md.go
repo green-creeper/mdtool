@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/green-creeper/mdtool/internal/converter"
 	"github.com/green-creeper/mdtool/pkg/models"
@@ -50,7 +51,7 @@ func runHTML2MD(cmd *cobra.Command, args []string) error {
 	if outputFile == "" {
 		output = os.Stdout
 	} else {
-		output, err = os.Create(outputFile)
+		output, err = os.Create(filepath.Clean(outputFile))
 		if err != nil {
 			return fmt.Errorf("failed to create output file: %w", err)
 		}
