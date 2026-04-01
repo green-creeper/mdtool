@@ -7,12 +7,13 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	md "github.com/JohannesKaufmann/html-to-markdown"
 	"github.com/JohannesKaufmann/html-to-markdown/plugin"
-	"github.com/green-creeper/mdtool/pkg/models"
 	readability "github.com/go-shiori/go-readability"
+	"github.com/green-creeper/mdtool/pkg/models"
 )
 
 const (
@@ -134,13 +135,36 @@ func (c *Web2MDConverter) Convert(req *models.ConvertRequest) *models.ConvertRes
 	bodyBytes = nil
 
 	// Add article metadata as header
-	header := fmt.Sprintf("# %s\n\n", article.Title)
+	var builder strings.Builder
+	// Calculate total size:
+	// "# " (2) + title + "\n\n" (2)
+	// optional: "*By " (4) + byline + "*\n\n" (3)
+	// "*Source: [" (10) + url + "](" (2) + url + ")*\n\n---\n\n" (11)
+	// markdown
+	size := 2 + len(article.Title) + 2 + 10 + len(urlStr) + 2 + len(urlStr) + 11 + len(markdown)
 	if article.Byline != "" {
-		header += fmt.Sprintf("*By %s*\n\n", article.Byline)
+		size += 4 + len(article.Byline) + 3
 	}
-	header += fmt.Sprintf("*Source: [%s](%s)*\n\n---\n\n", urlStr, urlStr)
+	builder.Grow(size)
 
-	fullMarkdown := header + markdown
+	builder.WriteString("# ")
+	builder.WriteString(article.Title)
+	builder.WriteString("\n\n")
+
+	if article.Byline != "" {
+		builder.WriteString("*By ")
+		builder.WriteString(article.Byline)
+		builder.WriteString("*\n\n")
+	}
+
+	builder.WriteString("*Source: [")
+	builder.WriteString(urlStr)
+	builder.WriteString("](")
+	builder.WriteString(urlStr)
+	builder.WriteString(")*\n\n---\n\n")
+	builder.WriteString(markdown)
+
+	fullMarkdown := builder.String()
 
 	// Write output
 	_, err = req.Output.Write([]byte(fullMarkdown))
