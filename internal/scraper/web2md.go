@@ -19,6 +19,10 @@ import (
 const (
 	// MaxResponseSize limits the response body size to prevent memory exhaustion (50MB)
 	MaxResponseSize = 50 * 1024 * 1024
+	// DefaultTimeout is the default timeout for HTTP requests
+	DefaultTimeout = 30 * time.Second
+	// MaxRedirects is the maximum number of redirects allowed
+	MaxRedirects = 10
 )
 
 // Web2MDConverter fetches web content and converts it to Markdown
@@ -33,10 +37,10 @@ func NewWeb2MDConverter() *Web2MDConverter {
 	converter.Use(plugin.Table())
 	return &Web2MDConverter{
 		httpClient: &http.Client{
-			Timeout: 30 * time.Second,
+			Timeout: DefaultTimeout,
 			CheckRedirect: func(req *http.Request, via []*http.Request) error {
-				if len(via) >= 10 {
-					return errors.New("stopped after 10 redirects")
+				if len(via) >= MaxRedirects {
+					return fmt.Errorf("stopped after %d redirects", MaxRedirects)
 				}
 				if req.URL.Scheme != "http" && req.URL.Scheme != "https" {
 					return fmt.Errorf("invalid redirect URL scheme: %s (only http and https are allowed)", req.URL.Scheme)
