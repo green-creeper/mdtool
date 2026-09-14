@@ -324,13 +324,19 @@ func (r *pdfRenderer) renderBlockquote(node *ast.Blockquote) {
 
 // renderTable renders a GFM table
 func (r *pdfRenderer) renderTable(node *extast.Table) {
+	// Count children to pre-allocate rows slice
+	rowCount := 0
+	for child := node.FirstChild(); child != nil; child = child.NextSibling() {
+		rowCount++
+	}
+
 	// Collect all rows and cells
-	var rows [][]string
+	rows := make([][]string, 0, rowCount)
 	var columnCount int
 
 	for child := node.FirstChild(); child != nil; child = child.NextSibling() {
 		if row, ok := child.(*extast.TableRow); ok {
-			var cells []string
+			cells := make([]string, 0, columnCount)
 			for cell := row.FirstChild(); cell != nil; cell = cell.NextSibling() {
 				if tableCell, ok := cell.(*extast.TableCell); ok {
 					cells = append(cells, strings.TrimSpace(r.extractText(tableCell)))
@@ -341,7 +347,7 @@ func (r *pdfRenderer) renderTable(node *extast.Table) {
 			}
 			rows = append(rows, cells)
 		} else if header, ok := child.(*extast.TableHeader); ok {
-			var cells []string
+			cells := make([]string, 0, columnCount)
 			for cell := header.FirstChild(); cell != nil; cell = cell.NextSibling() {
 				if tableCell, ok := cell.(*extast.TableCell); ok {
 					cells = append(cells, strings.TrimSpace(r.extractText(tableCell)))
